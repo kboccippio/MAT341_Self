@@ -1,0 +1,14 @@
+function plot_Nested_Times()
+
+% vector of N-values
+N = [1:1:10 20:10:100 125 150 175 200 225 250];
+
+for i = 1:length(N)
+    time(i)= calculate_Nested_For_Loop_Time(N);
+    
+end
+
+loglog(calculate_Nested_For_Loop_Time(N), time(i), 'magenta' , 'linewidth', 10);
+xlabel('N');
+ylabel('Time');
+    
