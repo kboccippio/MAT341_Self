@@ -1,0 +1,45 @@
+function vary_Error_Tolerances_To_Compare()
+
+%vector containing various error tolerances
+errTolVec = [1e-1 1e-2 1e-3 1e-4 1e-5 1e-6 1e-7 1e-8 1e-9 1e-10 1e-11 1e-12];
+
+%runs through each error tolerance and saves the number of iterations into a storage vector
+for i = 1:length(errTolVec)
+    golden(i) = golden_Search(errTolVec(i));
+    parabolic(i) = successive_Parabolic_Interpolation(errTolVec(i));
+end
+
+%plot of the error tolerances vs. the number of iterations N
+%uses logarithmic axis in the horizontal direction only
+figure(1); semilogx(errTolVec, golden, 'blue', errTolVec, parabolic, 'red', 'Linewidth', 5);
+
+%title and legend for the first plot
+title('Semilog Plot')
+legend('Golden Search', 'Succ. Para. Interp.');
+
+%labels for axes on first plot
+xlabel('Error tolerance (tol)');
+ylabel('Number of iterations (N)');
+
+%plot of the error tolerances vs. the number of iterations N
+%uses logarithmic axis for both the horizontal and vertical directions
+figure(2); loglog(errTolVec, golden,'blue', errTolVec, parabolic, 'red', 'Linewidth', 5);
+
+%title and legend for the second plot
+title('Loglog Plot')
+legend('Golden Search', 'Succ. Para. Interp.');
+
+%labels for axes on second plot
+xlabel('Error tolerance (tol)');
+ylabel('Number of iterations (N)');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a) It appears that the golden search algorithm
+% converges faster to the mininum for less accurate tolerances.
+%
+% b) When you increase the accuracy threshold, the successive parabolic
+% interpolation method has less iterations than the golden search method. 
+% The successive parabolic interpolation does not always converge quicker. 
+% I think it changes its convergence speed because with a higher accuracy
+% threshold, there are less parabolas that have to be made in the program
+% for the algorithm to converge. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
