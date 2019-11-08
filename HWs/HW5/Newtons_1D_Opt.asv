@@ -1,0 +1,33 @@
+%Implement Newton's Method to find minima of: f(x) = 0.5 -xe^-x^2 on
+%[0,2]
+
+function val = Newtons_1D_Opt(tol)
+
+%initial guess 
+xn = 0.25;
+
+%initialize N, the number of iterations it takes to achieve the specific error
+%tolerance that is inputted
+N = 0;
+
+while abs(first_deriv(xn)) > tol
+    
+    N = N + 1;
+    xn = xn - (first_deriv(xn)/second_deriv(xn));
+end
+
+val = xn
+N
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function val = first_deriv(xn)
+    
+%first derivative
+val = exp(-xn^2)*((2*xn^2) - 1);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function val = second_deriv(xn)
+
+%second derivative
+val = 2*xn*exp(-xn^2)*((-2*xn^2)+3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%(a) It takes 5 iterations to achieve 1e-8 accuracy with the inital guess
+%of 0.25
