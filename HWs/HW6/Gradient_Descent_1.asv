@@ -1,0 +1,42 @@
+function val = Gradient_Descent_1(tol, gamma)
+
+%initialize N, the number of iterations
+N = 0;
+
+%initial point
+A = [1; 1.5];
+
+%set tolerance and initialize error
+tol = 1e-8;
+err = 1;
+
+while err > tol
+    
+    %increment the number of iterations
+    N = N +1;
+    
+    B = A - gamma * grad(A);
+
+    %redefine error
+    err = sqrt(((B - A).') * (B - A));
+   
+   %redefine gamma
+   gamma = abs((B-A).'*(grad(B)-grad(A)))/((grad(B)-grad(A)).' * (grad(B)-grad(A)));
+    
+   %redefine A
+    A = B;
+end
+N
+val = A
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function val = grad(A)        
+
+%gradient function
+val = [-cos(A(1)); sin(A(2))];
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% (a) It takes 7 iterations to acheive 1e-10 accuracy using gamma = 0.5.
+%
+% (b) It takes 6 iterations to achieve 1e-10 accuracy using gamme = 0.9.
+%
+% (c) It takes 6 iterations to acheive 1e-10 accuracy using gamma = 1.5.
