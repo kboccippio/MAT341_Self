@@ -1,0 +1,71 @@
+function perform_NonLinear_Least_Squares()
+
+N = 2500;
+
+data = give_NonLinear_Least_Squares_Data(N);
+
+%collects data from first column
+xData = data(:, 1);
+yData = data(:, 2);
+
+%initial guess
+B0 = 1;
+B1 = 0.5;
+B2 = 0.3;
+
+%initialize tolerance and error
+tol = 1e-5;
+err = 1;
+
+while err > tol
+
+    for i = 1:N
+        x = xData(i);
+        Expy = exp((-(x-B1)^2)/(2*(B2^2)));
+        J(i, 1) = Expy;
+        J(i, 2) = B0 * ((x-B1)/((B2^2))) * Expy;
+        J(i, 3) = B0 * (((x-B1)^2)/((B2^3))) * Expy;
+    end
+
+    %getting function values for specific betas we picked
+    for i = 1:N
+        x = xData(i);
+        y = yData(i);
+        Expy = exp((-(x-B1)^2)/(2*B2^2));
+        f(i, 1) = y - (B0 * Expy);
+    end
+    
+    %pseudo inverse
+    pseudo_inverse = inv(J' * J)*(J') * f;
+    
+    %new beta values
+    new_B0 = B0 + pseudo_inverse(1);
+    new_B1 = B1 + pseudo_inverse(2);
+    new_B2 = B2 + pseudo_inverse(3);
+    
+    %new beta vector
+    B = [B0 B1 B2];
+    new_B = [new_B0 new_B1 new_B2];
+    
+    %calculate error
+    err = sqrt((new_B - B) * (new_B - B)');
+    
+    %redefine beta values
+    B0 = new_B0;
+    B1 = new_B1;
+    B2 = new_B2;
+    
+end
+
+ for i = 1:N
+        x = xData(i);
+        y = yData(i);
+        Expy = exp((-(x-B1)^2)/(2*B2^2));
+        f(i, 1) = (B0 * Expy);
+ end
+
+%label the axes
+%data points blue, model fit in red
+%thickness of data points 6, model fit 4
+%figure legend
+plot(xData, f, 'red', 'linewidth', 10);
